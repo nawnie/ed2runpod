@@ -44,10 +44,6 @@ RUN git clone https://github.com/victorchall/EveryDream2trainer everydream2 && \
     cd everydream2 && \
     python3 utils/get_yamls.py
 
-# Add welcome banner
-ADD welcome-banner.txt /root/welcome-banner.txt
-RUN echo "cat ~/welcome-banner.txt" >> ~/.bashrc
-
 ADD start.sh /
 
 RUN chmod +x /start.sh
