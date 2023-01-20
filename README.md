@@ -1,1 +1,1 @@
-# everydream-container
+# ED2 RunPod
