@@ -24,7 +24,6 @@ RUN pip install jupyterlab ipywidgets jupyter-archive ipyevents
 RUN pip install --pre -U xformers
 
 # Add EveryDream repo
-RUN mkdir /workspace
 WORKDIR /workspace
 RUN git clone https://github.com/victorchall/EveryDream2trainer && \
     cd EveryDream2trainer && \
