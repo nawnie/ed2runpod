@@ -13,7 +13,7 @@ then
     service ssh start
 fi
 
-tensorboard --logdir /workspace/EveryDream2trainer/logs --host 0.0.0.0
+tensorboard --logdir /workspace/EveryDream2trainer/logs --host 0.0.0.0 &
 if [[ $JUPYTER_PASSWORD ]]
 then
     cd /
