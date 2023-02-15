@@ -1,6 +1,6 @@
 
 
-FROM runpod/stable-diffusion-models:2 as build
+FROM runpod/stable-diffusion-models:2.1 as build
 
 WORKDIR /
 RUN rm -rf /stable-diffusion
@@ -18,7 +18,7 @@ RUN conda-pack --ignore-missing-files -n ldm -o /tmp/env.tar --ignore-editable-p
 
 RUN /venv/bin/conda-unpack
 
-FROM debian:buster AS runtime
+FROM ubuntu:22.04 AS runtime
 
 # Build with some basic utilities
 RUN apt-get update --yes && \
