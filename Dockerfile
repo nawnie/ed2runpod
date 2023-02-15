@@ -3,10 +3,10 @@
 FROM runpod/stable-diffusion-models:2.1 as build
 
 WORKDIR /
-RUN rm -rf /stable-diffusion
-RUN mkdir stable-diffusion
-ADD environment.yml /stable-diffusion/environment.yaml
-WORKDIR /stable-diffusion
+RUN rm -rf /ed2
+RUN mkdir ed2
+ADD environment.yml /ed2/environment.yaml
+WORKDIR /ed2
 RUN conda update -n base -c defaults conda
 RUN conda env create -f environment.yaml
 SHELL ["conda", "run", "-n", "ldm", "/bin/bash", "-c"]
