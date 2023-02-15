@@ -1,5 +1,5 @@
 # Based off https://www.runpod.io/blog/diy-deep-learning-docker-container
-FROM ubuntu:22.04
+FROM nvidia/cuda:11.7.1-cudnn8-devel-ubuntu22.04
 
 # Use bash shell
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
@@ -7,18 +7,12 @@ ENV DEBIAN_FRONTEND noninteractive\
     SHELL=/bin/bash
 
 RUN apt-get update --yes && \
-     apt-get upgrade --yes && \
-     apt install --yes --no-install-recommends \
-     wget bash curl git ffmpeg openssh-server \
-     gnupg2 python3-pip python3 python3.10-venv
-
-RUN wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.0-1_all.deb
-RUN dpkg -i cuda-keyring_1.0-1_all.deb
-
-RUN apt-get update --yes && \
-     apt install --yes cuda && \
-     apt-get clean && rm -rf /var/lib/apt/lists/* && \
-     echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
+    apt-get upgrade --yes && \
+    apt install --yes --no-install-recommends \
+        wget bash curl git ffmpeg openssh-server \
+        gnupg2 python3-pip python3 python3.10-venv && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* && \
+    echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
 
 # Add EveryDream repo
 RUN rm -rf /workspace && mkdir /workspace
