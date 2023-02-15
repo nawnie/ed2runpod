@@ -1,6 +1,8 @@
 #!/bin/bash
 
 echo "pod started"
+source /workspace/EveryDream2trainer/venv/bin/activate
+export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/
 
 if [[ $PUBLIC_KEY ]]
 then
@@ -17,7 +19,7 @@ tensorboard --logdir /workspace/EveryDream2trainer/logs --host 0.0.0.0 &
 if [[ $JUPYTER_PASSWORD ]]
 then
     cd /
-    jupyter lab --allow-root --no-browser --port=8888 --ip=* --ServerApp.terminado_settings='{"shell_command":["/bin/bash"]}' --ServerApp.token=$JUPYTER_PASSWORD --ServerApp.allow_origin=* --ServerApp.preferred_dir=/workspace
+    jupyter lab --allow-root --no-browser --port=8888 --ip=* --ServerApp.terminado_settings='{"shell_command":["/bin/bash"]}' --ServerApp.token=$JUPYTER_PASSWORD --ServerApp.allow_origin=* --ServerApp.preferred_dir=/workspace/EveryDream2trainer
 else
     sleep infinity
 fi
