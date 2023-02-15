@@ -2,6 +2,7 @@
 
 echo "pod started"
 source /workspace/EveryDream2trainer/venv/bin/activate
+export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/
 
 if [[ $PUBLIC_KEY ]]
 then
