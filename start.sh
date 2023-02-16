@@ -1,7 +1,9 @@
 #!/bin/bash
 echo "Container Started"
 export PYTHONUNBUFFERED=1
-source /workspace/venv/bin/activate
+echo "Container Started"
+echo "conda activate ldm" >> ~/.bashrc
+source ~/.bashrc
 
 if [[ $PUBLIC_KEY ]]
 then
