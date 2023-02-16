@@ -1,8 +1,7 @@
 #!/bin/bash
-
-echo "pod started"
-source /workspace/EveryDream2trainer/venv/bin/activate
-#export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/:$LD_LIBRARY_PATH
+echo "Container Started"
+export PYTHONUNBUFFERED=1
+source /workspace/venv/bin/activate
 
 if [[ $PUBLIC_KEY ]]
 then
@@ -16,6 +15,7 @@ then
 fi
 
 tensorboard --logdir /workspace/EveryDream2trainer/logs --host 0.0.0.0 &
+
 if [[ $JUPYTER_PASSWORD ]]
 then
     cd /
