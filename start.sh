@@ -5,14 +5,19 @@ echo "Container Started"
 echo "conda activate ldm" >> ~/.bashrc
 source ~/.bashrc
 
-if [[ $PUBLIC_KEY ]]
-then
-    mkdir -p ~/.ssh
-    chmod 700 ~/.ssh
-    cd ~/.ssh
-    echo $PUBLIC_KEY >> authorized_keys
-    chmod 700 -R ~/.ssh
-    cd /
+# This is a workaround specifically for running this image in RunPod.
+# Install the openssh service so that SCP can be used to copy files to/from the image.
+# This is not an *explicit* test for RunPod, but RunPod sets this environment variable
+# if the public key is configured in settings.
+# consider exposing a separate env var or another control for this purpose?
+if [[ -v "PUBLIC_KEY" ]] && [[ ! -d "${HOME}/.ssh" ]]; then
+    apt-get update
+    apt-get install -y openssh-server
+    pushd $HOME
+    mkdir -p .ssh
+    echo ${PUBLIC_KEY} > .ssh/authorized_keys
+    chmod -R 700 .ssh
+    popd
     service ssh start
 fi
 

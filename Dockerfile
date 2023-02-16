@@ -11,7 +11,7 @@ WORKDIR /workspace
 
 # Build with some basic utilities
 RUN apt-get update && apt-get install -y \
-    openssh-server wget bash curl git git-lfs vim &&\
+    wget bash curl git git-lfs vim &&\
     apt-get clean && rm -rf /var/lib/apt/lists/* && \
     echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
 
