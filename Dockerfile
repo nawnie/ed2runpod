@@ -9,6 +9,7 @@ RUN apt-get update --yes && \
 # Add EveryDream repo
 WORKDIR /workspace
 RUN rm -rf /workspace/stable-diffusion-webui
+
 RUN git clone https://github.com/victorchall/EveryDream2trainer && \
     mkdir -p /workspace/EveryDream2trainer/input && \
     mkdir -p /workspace/EveryDream2trainer/logs
@@ -18,12 +19,11 @@ SHELL ["/bin/bash", "-c"]
 ENV PATH="${PATH}:/venv/bin"
 
 # !export TORCH_CUDA_ARCH_LIST=8.6 && pip install git+https://github.com/facebookresearch/xformers.git@48a77cc#egg=xformers
-RUN pip install -U -I torch==1.13.1+cu117 torchvision==0.14.1+cu117 --extra-index-url "https://download.pytorch.org/whl/cu117"; \
-    pip install --pre --no-deps -U xformers; \
-    pip install -U diffusers[torch]; \
-    pip install -U triton; \
-    pip install -r requirements.txt; \
-    pip install -U jupyterlab ipywidgets jupyter-archive ipyevents; \
+RUN pip install --no-cache-dir -U -I torch==1.13.1+cu117 torchvision==0.14.1+cu117 --extra-index-url "https://download.pytorch.org/whl/cu117"; \
+    pip install --no-cache-dir --pre --no-deps -U xformers; \
+    pip install --no-cache-dir -U triton; \
+    pip install --no-cache-dir -r requirements.txt; \
+    pip install --no-cache-dir -U jupyterlab ipywidgets jupyter-archive ipyevents; \
     jupyter nbextension enable --py widgetsnbextension
 
 RUN git pull && python3 utils/get_yamls.py
