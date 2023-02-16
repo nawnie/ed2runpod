@@ -1,6 +1,6 @@
 
 
-FROM runpod/stable-diffusion-models:2.1 as build
+FROM pytorch/conda-builder:cuda117 as build
 
 WORKDIR /
 RUN rm -rf /ed2
