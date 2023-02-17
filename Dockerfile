@@ -64,7 +64,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
         python3-distutils && \
     update-ca-certificates && \
     dpkg -i cuda-keyring_1.0-1_all.deb && \
-    apt update && apt install -y --no-install-recommends cuda-cudart-dev-11-7 && \
+    apt update && apt install -y --no-install-recommends cuda-libraries-11-7 && \
     apt-get clean && \
     apt-get autoclean && \
     rm -rf /var/lib/apt/lists/* && \
