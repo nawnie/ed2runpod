@@ -1,9 +1,7 @@
 #!/bin/bash
 echo "Container Started"
 export PYTHONUNBUFFERED=1
-echo "Container Started"
-echo "conda activate ldm" >> ~/.bashrc
-source ~/.bashrc
+source /workspace/venv/bin/activate
 
 # This is a workaround specifically for running this image in RunPod.
 # Install the openssh service so that SCP can be used to copy files to/from the image.

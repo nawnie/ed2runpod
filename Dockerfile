@@ -50,7 +50,7 @@ ENV PYTHONDONTWRITEBYTECODE=1
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
     apt update && apt install -y --no-install-recommends \
-        wget bash curl git git-lfs vim software-properties-common \
+        wget bash curl git git-lfs vim \
         apt-transport-https ca-certificates \
         python3-distutils && \
     update-ca-certificates && \
