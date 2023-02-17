@@ -63,10 +63,7 @@ ENV VIRTUAL_ENV=/workspace/venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 COPY --from=builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 
-RUN git clone https://github.com/victorchall/EveryDream2trainer && \
-    mkdir -p /workspace/EveryDream2trainer/input && \
-    mkdir -p /workspace/EveryDream2trainer/logs && \
-    cd EveryDream2trainer && python3 utils/get_yamls.py
+RUN git clone https://github.com/victorchall/EveryDream2trainer
 
 WORKDIR /workspace/EveryDream2trainer
 

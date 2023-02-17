@@ -1,7 +1,14 @@
 #!/bin/bash
 echo "Container Started"
 export PYTHONUNBUFFERED=1
-source /workspace/venv/bin/activate
+echo "source /workspace/venv/bin/activate" >> ~/.bashrc
+source ~/.bashrc
+cd /workspace/EveryDream2trainer
+git fetch && git pull
+python utils/get_yamls.py
+mkdir -p /workspace/EveryDream2trainer/logs
+mkdir -p /workspace/EveryDream2trainer/input
+
 
 # This is a workaround specifically for running this image in RunPod.
 # Install the openssh service so that SCP can be used to copy files to/from the image.
