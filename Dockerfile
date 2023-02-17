@@ -6,22 +6,30 @@ FROM library/ubuntu:22.04 AS builder
 ARG DEBIAN_FRONTEND=noninteractive
 
 # Create workspace working directory
-RUN mkdir /workspace
-WORKDIR /workspace
+RUN mkdir /build
+WORKDIR /build
 
 RUN rm -f /etc/apt/apt.conf.d/docker-clean; echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' > /etc/apt/apt.conf.d/keep-cache
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
     apt update && apt-get install -y \
-        git \
+        git wget \
         python3-venv \
         python3-pip \
-        build-essential
+        apt-transport-https ca-certificates \
+        build-essential \
+    && update-ca-certificates
+
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.0-1_all.deb && \
+    dpkg -i cuda-keyring_1.0-1_all.deb && \
+    apt update && apt-get install -y cuda
 
 ENV VIRTUAL_ENV=/workspace/venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
-ADD requirements.txt /workspace
 
+ADD requirements.txt /build
 RUN --mount=type=cache,target=/root/.cache/pip \
     python3 -m venv ${VIRTUAL_ENV} && \
     pip install -U -I torch==1.13.1+cu117 torchvision==0.14.1+cu117 --extra-index-url "https://download.pytorch.org/whl/cu117" && \
@@ -47,6 +55,7 @@ ENV PYTHONUNBUFFERED=1
 # Don't write .pyc bytecode
 ENV PYTHONDONTWRITEBYTECODE=1
 
+COPY --from=builder /build/cuda-keyring_1.0-1_all.deb cuda-keyring_1.0-1_all.deb
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
     apt update && apt install -y --no-install-recommends \
@@ -54,6 +63,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
         apt-transport-https ca-certificates \
         python3-distutils && \
     update-ca-certificates && \
+    dpkg -i cuda-keyring_1.0-1_all.deb && \
+    apt update && apt install -y --no-install-recommends cuda-cudart-dev-11-7 && \
     apt-get clean && \
     apt-get autoclean && \
     rm -rf /var/lib/apt/lists/* && \

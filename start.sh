@@ -31,6 +31,7 @@ tensorboard --logdir /workspace/EveryDream2trainer/logs --host 0.0.0.0 &
 if [[ $JUPYTER_PASSWORD ]]
 then
     cd /
+    jupyter nbextension enable --py widgetsnbextension
     jupyter lab --allow-root --no-browser --port=8888 --ip=* --ServerApp.terminado_settings='{"shell_command":["/bin/bash"]}' --ServerApp.token=$JUPYTER_PASSWORD --ServerApp.allow_origin=* --ServerApp.preferred_dir=/workspace/EveryDream2trainer
 else
     sleep infinity
