@@ -63,8 +63,8 @@ ENV VIRTUAL_ENV=/workspace/venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 COPY --from=builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 
+WORKDIR /workspace
 RUN git clone https://github.com/victorchall/EveryDream2trainer
-
 WORKDIR /workspace/EveryDream2trainer
 
 ADD start.sh /
