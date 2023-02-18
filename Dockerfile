@@ -21,7 +21,7 @@ RUN python3 --version && pip install -r requirements.txt
 RUN pip install jupyterlab ipywidgets jupyter-archive ipyevents
 
 # Install xformers
-RUN pip install --pre -U xformers
+RUN pip install xformers==0.0.16
 
 # Add EveryDream repo
 WORKDIR /workspace
