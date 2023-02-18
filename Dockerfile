@@ -1,7 +1,7 @@
 #######################
 #### Builder stage ####
 
-FROM library/ubuntu:22.04 AS builder
+FROM nvidia/cuda:11.7.1-devel-ubuntu22.04 AS builder
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -20,12 +20,6 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
         build-essential \
     && update-ca-certificates
 
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked \
-    wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.0-1_all.deb && \
-    dpkg -i cuda-keyring_1.0-1_all.deb && \
-    apt update && apt-get install -y cuda
-
 ENV VIRTUAL_ENV=/workspace/venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
@@ -42,7 +36,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 #######################
 #### Runtime stage ####
 
-FROM library/ubuntu:22.04 as runtime
+FROM nvidia/cuda:11.7.1-base-ubuntu22.04 as runtime
 
 # Use bash shell
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
@@ -55,17 +49,13 @@ ENV PYTHONUNBUFFERED=1
 # Don't write .pyc bytecode
 ENV PYTHONDONTWRITEBYTECODE=1
 
-COPY --from=builder /build/cuda-keyring_1.0-1_all.deb cuda-keyring_1.0-1_all.deb
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
     apt update && apt install -y --no-install-recommends \
         wget bash curl git git-lfs vim \
         apt-transport-https ca-certificates \
-        python3-distutils && \
+        python3-distutils cuda-libraries-11-7 && \
     update-ca-certificates && \
-    dpkg -i cuda-keyring_1.0-1_all.deb && \
-    apt update && apt install -y --no-install-recommends cuda-libraries-11-7 && \
-    apt-get clean && \
     apt-get autoclean && \
     rm -rf /var/lib/apt/lists/* && \
     echo "en_US.UTF-8 UTF-8" > /etc/locale.gen

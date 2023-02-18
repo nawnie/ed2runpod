@@ -1,8 +1,9 @@
 #!/bin/bash
 echo "Container Started"
 export PYTHONUNBUFFERED=1
-echo "source /workspace/venv/bin/activate" >> ~/.bashrc
-source ~/.bashrc
+source /workspace/venv/bin/activate
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-11.7/targets/x86_64-linux/lib
+
 cd /workspace/EveryDream2trainer
 git fetch && git pull
 python utils/get_yamls.py
